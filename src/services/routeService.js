@@ -1,18 +1,3 @@
-// ─────────────────────────────────────────────────────────────────
-// routeService.js — Middle layer between CLI and algorithms
-// ─────────────────────────────────────────────────────────────────
-// WHY:  The CLI should not know about Graph, BFS, Dijkstra, or
-//       data files. This service sets up the graph once and exposes
-//       simple functions the CLI can call.
-//
-// FUNCTIONS:
-//   findShortestRoute(from, to)   → fewest stops      (BFS)
-//   findFastestRoute(from, to)    → minimum time       (Dijkstra)
-//   findCheapestRoute(from, to)   → minimum fare       (Dijkstra)
-//   isValidStation(name)          → input validation
-//   getStationList()              → autocomplete list
-// ─────────────────────────────────────────────────────────────────
-
 const { graph } = require("../../data/dmrc_graph");
 const Graph = require("../graph/Graph");
 const bfs = require("../algorithms/bfs");
