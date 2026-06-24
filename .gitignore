@@ -1,2 +1,15 @@
-node_modules/
+# macOS
 .DS_Store
+
+# Node (legacy)
+node_modules/
+package-lock.json
+
+# C++ Build Artifacts
+metro
+build/
+*.o
+*.out
+
+# Resume (Personal)
+resume.md
