@@ -2,7 +2,7 @@
 // PriorityQueue.h — Min-priority queue for Dijkstra
 // ─────────────────────────────────────────────────────────────────
 // WHY: Dijkstra must always expand the node with the lowest
-//      accumulated cost. std::priority_queue is a max-heap by
+//      accumulated cost. priority_queue is a max-heap by
 //      default, so we use a greater<> comparator to flip it into
 //      a min-heap.
 //
@@ -15,10 +15,12 @@
 #include <utility>
 #include <functional>
 
+using namespace std;
+
 // Entry in the priority queue
 struct PQEntry {
     double      cost;
-    std::string station;
+    string station;
 
     // Min-heap: lower cost = higher priority
     bool operator>(const PQEntry& other) const {
@@ -28,7 +30,7 @@ struct PQEntry {
 
 class PriorityQueue {
 public:
-    void enqueue(const std::string& station, double cost) {
+    void enqueue(const string& station, double cost) {
         pq_.push({cost, station});
     }
 
@@ -43,7 +45,7 @@ public:
     }
 
 private:
-    std::priority_queue<PQEntry,
-                        std::vector<PQEntry>,
-                        std::greater<PQEntry>> pq_;
+    priority_queue<PQEntry,
+                        vector<PQEntry>,
+                        greater<PQEntry>> pq_;
 };

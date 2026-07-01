@@ -20,14 +20,16 @@
 #include <unordered_map>
 #include <limits>
 
-// ─── Rebuilds path from previous map ─────────────────────────────
-static std::vector<std::string> rebuildPath(
-        const std::unordered_map<std::string, std::string>& previous,
-        const std::string& source,
-        const std::string& destination) {
+using namespace std;
 
-    std::vector<std::string> path;
-    std::string current = destination;
+// ─── Rebuilds path from previous map ─────────────────────────────
+static vector<string> rebuildPath(
+        const unordered_map<string, string>& previous,
+        const string& source,
+        const string& destination) {
+
+    vector<string> path;
+    string current = destination;
 
     while (current != source) {
         path.push_back(current);
@@ -38,18 +40,18 @@ static std::vector<std::string> rebuildPath(
     path.push_back(source);
 
     // Reverse to get source→destination order
-    std::reverse(path.begin(), path.end());
+    reverse(path.begin(), path.end());
     return path;
 }
 
 // ─── dijkstra ────────────────────────────────────────────────────
 DijkstraResult dijkstra(const Graph& graph,
-                         const std::string& source,
-                         const std::string& destination,
+                         const string& source,
+                         const string& destination,
                          WeightKey key) {
 
-    std::unordered_map<std::string, double>      costs;     // best cost to reach each station
-    std::unordered_map<std::string, std::string> previous;  // path reconstruction
+    unordered_map<string, double>      costs;     // best cost to reach each station
+    unordered_map<string, string> previous;  // path reconstruction
     PriorityQueue pq;
 
     costs[source] = 0.0;
@@ -71,7 +73,7 @@ DijkstraResult dijkstra(const Graph& graph,
 
         // Explore neighbours
         for (const Edge& edge : graph.getNeighbours(current)) {
-            const std::string& next = edge.station;
+            const string& next = edge.station;
 
             double edgeWeight = (key == WeightKey::TIME)
                                 ? static_cast<double>(edge.time)

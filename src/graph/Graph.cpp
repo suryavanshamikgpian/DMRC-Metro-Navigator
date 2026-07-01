@@ -5,15 +5,17 @@
 #include <algorithm>
 #include <cctype>
 
-const std::vector<Edge> Graph::EMPTY;
+using namespace std;
+
+const vector<Edge> Graph::EMPTY;
 
 Graph::Graph(AdjList adjList) : adj_(std::move(adjList)) {
     fixMissingReverseEdges();
     // Build lowercase lookup after all edges are finalised
     for (const auto& [name, _] : adj_) {
-        std::string lower = name;
-        std::transform(lower.begin(), lower.end(), lower.begin(),
-                       [](unsigned char c){ return std::tolower(c); });
+        string lower = name;
+        transform(lower.begin(), lower.end(), lower.begin(),
+                       [](unsigned char c){ return tolower(c); });
         lowerToCanonical_[lower] = name;
     }
 }
@@ -25,13 +27,13 @@ Graph::Graph(AdjList adjList) : adj_(std::move(adjList)) {
 void Graph::fixMissingReverseEdges() {
     // Collect all (source, edge) pairs first to avoid invalidating
     // iterators while we insert new entries.
-    std::vector<std::pair<std::string, Edge>> toAdd;
+    vector<pair<string, Edge>> toAdd;
 
     for (auto& [station, edges] : adj_) {
         for (const auto& edge : edges) {
             if (edge.station == station) continue; // skip self-loop
 
-            const std::string& target = edge.station;
+            const string& target = edge.station;
 
             // Check if reverse edge already exists (same line)
             auto it = adj_.find(target);
@@ -66,36 +68,36 @@ void Graph::fixMissingReverseEdges() {
 }
 
 // ─── getNeighbours ───────────────────────────────────────────────
-const std::vector<Edge>& Graph::getNeighbours(const std::string& station) const {
+const vector<Edge>& Graph::getNeighbours(const string& station) const {
     auto it = adj_.find(station);
     if (it == adj_.end()) return EMPTY;
     return it->second;
 }
 
 // ─── hasStation ───────────────────────────────────────────────────
-bool Graph::hasStation(const std::string& station) const {
+bool Graph::hasStation(const string& station) const {
     return adj_.count(station) > 0;
 }
 
 // ─── resolveStation ──────────────────────────────────────────────
 // Lowercases user input and looks it up in the pre-built map.
 // Returns canonical name (e.g. "Rajiv Chowk") or "" if not found.
-std::string Graph::resolveStation(const std::string& input) const {
-    std::string lower = input;
-    std::transform(lower.begin(), lower.end(), lower.begin(),
-                   [](unsigned char c){ return std::tolower(c); });
+string Graph::resolveStation(const string& input) const {
+    string lower = input;
+    transform(lower.begin(), lower.end(), lower.begin(),
+                   [](unsigned char c){ return tolower(c); });
     auto it = lowerToCanonical_.find(lower);
     if (it == lowerToCanonical_.end()) return "";
     return it->second;
 }
 
 // ─── getAllStations ───────────────────────────────────────────────
-std::vector<std::string> Graph::getAllStations() const {
-    std::vector<std::string> stations;
+vector<string> Graph::getAllStations() const {
+    vector<string> stations;
     stations.reserve(adj_.size());
     for (const auto& [name, _] : adj_) {
         stations.push_back(name);
     }
-    std::sort(stations.begin(), stations.end());
+    sort(stations.begin(), stations.end());
     return stations;
 }

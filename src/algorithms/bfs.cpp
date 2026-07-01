@@ -21,22 +21,24 @@
 #include <queue>
 #include <unordered_set>
 
-std::vector<std::string> bfs(const Graph& graph,
-                              const std::string& source,
-                              const std::string& destination) {
+using namespace std;
+
+vector<string> bfs(const Graph& graph,
+                              const string& source,
+                              const string& destination) {
 
     // Queue of paths (each path is a vector of station names)
-    std::queue<std::vector<std::string>> q;
-    std::unordered_set<std::string> visited;
+    queue<vector<string>> q;
+    unordered_set<string> visited;
 
     q.push({source});
     visited.insert(source);
 
     while (!q.empty()) {
-        std::vector<std::string> path = q.front();
+        vector<string> path = q.front();
         q.pop();
 
-        const std::string& current = path.back();
+        const string& current = path.back();
 
         // Found the destination — return this path
         if (current == destination) {
@@ -45,11 +47,11 @@ std::vector<std::string> bfs(const Graph& graph,
 
         // Explore all neighbours of the current station
         for (const Edge& edge : graph.getNeighbours(current)) {
-            const std::string& next = edge.station;
+            const string& next = edge.station;
 
             if (visited.find(next) == visited.end()) {
                 visited.insert(next);
-                std::vector<std::string> newPath = path;
+                vector<string> newPath = path;
                 newPath.push_back(next);
                 q.push(std::move(newPath));
             }
